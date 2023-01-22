@@ -7,6 +7,7 @@ This is the home of the website. Clicking the start button will direct to the ma
 ## main.html
 This website will ask players to enter their names before starting the game. 
 ![alt text](https://github.com/imchristie/Apple-Chess/blob/main/main.png)
+If the players want to restart the game, they can click the Restart button.
 
 ## rules.html
 This website includes the rules of Apple Chess and the resources of the rules. 
