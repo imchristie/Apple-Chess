@@ -1,0 +1,65 @@
+/* BACKGROUND STYLING */
+body {
+    background-image: url("12345.png");
+    font-size: 30px;
+    color: white;
+}
+
+/* HEADER STYLING */
+.header {
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-family: 'American Typewriter', serif;
+    -webkit-animation: focus-in-expand 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: focus-in-expand 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+/* NEVIGATION BAR STYLING */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    font-family: 'American Typewriter', serif;
+}
+
+/* TOPNAV LINK STYLING */
+.topnav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* HOVER COLOR */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active{
+    background-color: #ddd;
+    color: black;
+}
+
+
+/* Container */
+html,body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    font-family: 'American Typewriter', serif;
+}
+
+div[class*=container] {
+    text-align: center;
+    margin: auto;
+    width: 17%;
+    height: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

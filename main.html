@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Single Player</title>
+        <meta charset="UTF-8">
+        <style>
+		.button {
+            background-color: none;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            font-family: 'American Typewriter', serif;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            -webkit-transition-duration: 0.7s;
+            transition-duration: .7s;
+            cursor: pointer;
+			text-decoration: none;
+        }       
+        .buttonA {
+            background-color: none;
+            color: black;
+            border: 2px solid #555555;
+        }        
+        .buttonA:hover {
+            background-color: #555555;
+            color: white;
+        }
+				
+        body {
+            background-image: url("12345.png");
+            font-size: 30px;
+            font-family: 'American Typewriter', serif;
+            color: white;
+        }
+        .header {
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-family: 'American Typewriter', serif;
+            -webkit-animation: focus-in-expand 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: focus-in-expand 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+            font-family: 'American Typewriter', serif;
+        }
+        
+        /* TOPNAV LINK STYLING */
+        .topnav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        /* HOVER COLOR */
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+        .topnav a.active{
+            background-color: #ddd;
+            color: black;
+        }
+        .focus-in-expand {
+            -webkit-animation: focus-in-expand 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: focus-in-expand 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+        @-webkit-keyframes focus-in-expand {
+            0% {
+                letter-spacing: -0.5em;
+                -webkit-filter: blur(12px);
+                filter: blur(12px);
+                opacity: 0;
+            }
+            100% {
+                -webkit-filter: blur(0px);
+                filter: blur(0px);
+                opacity: 1;
+            }
+        }
+        @keyframes focus-in-expand {
+            0% {
+                letter-spacing: -0.5em;
+                -webkit-filter: blur(12px);
+                filter: blur(12px);
+                opacity: 0;
+            }
+            100% {
+                -webkit-filter: blur(0px);
+                filter: blur(0px);
+                opacity: 1;
+            }
+        }
+        </style>
+        <body>
+            <div class="header">
+                <h1>Multiplayer</h1>
+            </div>
+            <!-- NEVIGATION BAR -->
+            <div class="topnav">
+                <a class="active" href="index.html">Home</a>
+                <a href="rules.html">Rules</a>
+            </div>
+            <center><p>Current Turn is <b id='user1'></b> </p></center>
+            <!-- BUTTONS -->
+        <script>
+		window.alert("Black first")
+		var p1 = window.prompt("Enter Player1 name. (Black)","Player1");
+		var p2 = window.prompt("Enter Player2 name. (White)","Player2");
+        /* 2D array game board */
+        var board = new Array (9);
+        for( var  i = 0; i < 9; i++){
+            board[i] = new Array (9);
+            board[i] = ["0","0","0","0","0","0","0","0","0","0"];
+        }
+        board[4][4] = "B";
+        board[4][5] = "W";
+        board[5][4] = "W";
+        board[5][5] = "B";
+        
+        /* For Checking */
+        
+        direction = [[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]];
+        
+        /* Default First Turn  */
+        
+        var turns = "B";
+        
+        /* Next Turn */
+        
+        var altturns = "W";
+        
+        /* Print Board */
+        for ( var x = 1; x < 9; x++){
+            document.write("<center>")
+            for( var y = 1; y < 9; y++){
+                if ( board[x][y] == "0" ){
+                    document.write("<img src=\"board.png\" width=\"45\" height=\"45\" id=\"",x,y,"\" onclick=\"changelocation(",x,",",y,");\">")
+                }
+                else if ( board[x][y] == "B" ){
+                    document.write("<img src=\"B.png\" width=\"45\" height=\"45\" id=\"",x,y,"\">")
+                }
+                else if ( board[x][y] == "W" ){
+                    document.write("<img src=\"W.png\" width=\"45\" height=\"45\" id=\"",x,y,"\">")
+                }
+			}
+            document.write("<br/>");
+        }
+        
+        
+        /* Check Valid Location */
+        /* Return (Put Chess Locations) (Change Chess's direction) (Number of changes)) */
+        /* x = vertical y = horizontal */
+        function CheckValidLocation(){
+            var validboard = new Array(1);
+            var validnum = 0;
+            /* valid num = valid board array length */
+            var xx,yy;
+            /* Contain the number after added direction's x , y */
+            var changelength;
+            /* The Number of chess needs to change */
+            for (var x = 1; x < 9; x++){
+                for (var y = 1; y < 9; y++){
+                    if (board[x][y] !== "0")
+                        continue;
+                    
+                    for (var  count = 0; count < direction.length; count++){
+                        changelength = 0;
+                        /* xx */
+                        xx = x + direction[count][0];
+                        yy = y + direction[count][1];
+                        
+                        if (( yy < 1 ) || ( xx < 1 ) || ( yy > 8 ) || ( xx > 8 ) || (board[xx][yy]!==altturns))
+							continue;
+                        
+                        xx += direction[count][0];
+                        yy += direction[count][1];
+                        changelength += 1;
+                        
+						if (( yy == 0 ) || ( xx == 0 ) || ( yy == 9 ) || ( xx == 9 ))
+							continue;
+						
+                        while (board[xx][yy] == altturns){
+                            xx += direction[count][0];
+                            yy += direction[count][1];
+                            changelength += 1;
+                            if (( yy == 0 ) || ( xx == 0 ) || ( yy > 8 ) || ( xx > 8 ) || (board[xx][yy]!==altturns))
+								break;
+							
+                        }
+                        
+						if (( yy == 0 ) || ( xx == 0 ) || ( yy == 9 ) || ( xx == 9 ))
+							continue;	
+					
+                        if (board[xx][yy]==turns){
+                            validboard[validnum] = new Array(4);
+                            validboard[validnum][0] = x;
+                            validboard[validnum][1] = y;
+                            validboard[validnum][2] = count;
+                            validboard[validnum][3] = changelength;
+                            validnum += 1;
+                            
+                        }
+                    
+                    
+					}
+				}
+            }
+			return validboard;
+        }/*CheckValidLocation*/
+        
+        function ChecknChange(x1,y1){
+			var checkvalidboard = CheckValidLocation();
+            var i = 0;
+            var changearraylength = 0;
+            var changearray = new Array(1);
+            var changedirection = new Array (2);
+            var x2 = x1;
+            var y2 = y1;
+            while ( i < checkvalidboard.length){
+				if (checkvalidboard[i] !== undefined){
+					if ((checkvalidboard[i][0] == x1) && (checkvalidboard[i][1] == y1)){
+						changedirection = direction[checkvalidboard[i][2]];
+						for (var num = 0; num < checkvalidboard[i][3]; num++){
+							changearray[changearraylength] = new Array(2);
+							x2 += changedirection[0];
+							y2 += changedirection[1];
+							changearray[changearraylength][0] = x2;
+							changearray[changearraylength][1] = y2;
+							changearraylength += 1;
+						}
+					}
+				}
+                i += 1;
+				x2 = x1;
+				y2 = y1;
+            }
+            if (changearraylength ==  0)
+                return false;
+            else
+				return changearray;
+                        
+        }/* checknChange */
+		
+		function countwin(){
+			var BB = 0;
+			var WW = 0;
+			var win;
+			for (var xx = 1; xx < 9; xx++){
+				for (var yy = 1; yy < 9; yy++){
+					if (board[xx][yy] == "B")
+						BB += 1;
+					else if (board[xx][yy] == "W")
+						WW += 1;
+				}
+			}
+			if (BB>WW){
+				win = "B";
+				setTimeout(() => window.alert(p1 + " wins"), 100);
+			}
+			else if (WW>BB){
+				win = "W";
+				setTimeout(() => window.alert(p2 + " wins"), 100);
+			}
+			else {
+				win = "N";
+				setTimeout(() => window.alert("No one wins"), 100);
+			}
+		}/*countwin*/
+		
+		var countedwin = 0; /*see if countwin is looped once*/
+		
+		function changelocation(x1,y1){
+            var vaildarray;
+			if (board[x1][y1]=="0"){
+				var locationarray = ChecknChange(x1,y1);
+				var x2,y2;
+				if (locationarray !== false){
+					changeimg(x1,y1);
+					for (var numm = 0; numm < locationarray.length; numm++){
+						x2 = locationarray[numm][0];
+						y2 = locationarray[numm][1];
+						changeimg(x2,y2);
+					}
+					if (turns == "B"){
+						turns = "W";
+						altturns = "B";
+					}
+					else {
+						turns = "B";
+						altturns = "W";
+					}
+				};
+                validarray = CheckValidLocation();
+			}
+			if (turns == "W")
+				document.getElementById('user1').innerHTML = p2;
+			else 
+				document.getElementById('user1').innerHTML = p1;
+            
+			if ((validarray[0] == undefined) && (countedwin == 0)){
+                countwin();
+                countedwin = 1;
+			}
+		}/*changelocation*/
+		
+		
+		function changeimg(x,y){
+            var image = document.getElementById(x*10+y);
+            if (turns == "B"){
+				board[x][y] = turns;
+                image.src = "B.png";
+			}
+            else if (turns == "W"){
+				board[x][y] = turns;
+                image.src = "W.png";
+			}	
+        }/*changeimg*/
+		
+		function changeText(){
+			document.getElementById('user1').innerHTML = p1;
+		}
+        
+        window.onload=changelocation(1,1)
+        </script>
+		<p id="turns"></p>
+		<a href="main.html" class="button buttonA">Restart</a>
+    </body>
+</html>
