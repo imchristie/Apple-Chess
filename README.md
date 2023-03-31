@@ -1,5 +1,5 @@
 ## Download and Run
-Download the AppleChess.zip file, unzip it, and open index.html. 
+Download the main.zip file, unzip it, and open index.html. 
 
 ## index.html
 This is the home of the website. Clicking the start button will direct to the main.html, which will start a new game of Apple Chess.
